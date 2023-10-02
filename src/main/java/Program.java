@@ -3,34 +3,57 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Scanner;
+
 
 public class Program {
     public static void main(String[] args) {
 
+        String[] arguments = new String[args.length];
+        StringBuilder text = new StringBuilder();
 
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Введите текст: ");
-        String text = scanner.nextLine();
+        for (int i = 0; i < args.length; i++) {
+            String arg = args[i];
+            arguments[i] = arg;
+
+        }
+        for(int i = 2; i < arguments.length; i++) {
+            text.append(arguments[i]).append(" ");
+        }
+        String printedText = String.valueOf(text).replace("'", "");
 
         BufferedImage image = null;
-        try {
-            System.out.print("Укажите местоположение исходного изображения: ");
-            String pathFile = scanner.nextLine();
-            image = ImageIO.read(new File(pathFile));
-        } catch (IOException ignored) {
+        if (!arguments[0].equals("help") && arguments[1] == null) {
+            System.out.println("Не выбрано исходное изображение");
         }
-        assert image != null;
-        Graphics2D g2d = image.createGraphics();
-        g2d.setColor(Color.BLACK);
-        g2d.setFont(new Font("Arial", Font.BOLD, 50));
-        g2d.drawString(text, image.getWidth() / 2, image.getHeight() / 5);
+        if (!args[0].isEmpty() && arguments[0].equals("help")) {
+            System.out.println("Доступные команды:");
+            System.out.println("help - вызывает справку по командам программы");
+            System.out.println("mem - указывается в качестве первого аргумента и запускает алгоритм печати текста на выбранном изображении");
+            System.out.println(" ");
+            System.out.println("Пример команды:  java -jar TextOnPic.jar mem ./image.png 'Текст'");
 
-        try {
-            ImageIO.write(image, "png", new File("modified_image.png"));
-        } catch (IOException ex) {
-            throw new RuntimeException(ex);
         }
+        if (!args[0].isEmpty() && arguments[0].equals("mem")) {
+            try {
+                assert arguments[1] != null;
+                image = ImageIO.read(new File(arguments[1]));
+            } catch (IOException ignored) {
+            }
+            assert image != null;
+            Graphics2D g2d = image.createGraphics();
+            g2d.setColor(Color.BLACK);
+            g2d.setFont(new Font("Arial", Font.BOLD, 50));
+            g2d.drawString(printedText, image.getWidth() / 2, image.getHeight() / 5);
+
+            try {
+                ImageIO.write(image, "png", new File("modified_image.png"));
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        } else {
+            System.out.println("Не верно указан первый аргумент");
+        }
+
 
     }
 
