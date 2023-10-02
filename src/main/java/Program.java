@@ -30,7 +30,7 @@ public class Program {
             System.out.println("help - вызывает справку по командам программы");
             System.out.println("mem - указывается в качестве первого аргумента и запускает алгоритм печати текста на выбранном изображении");
             System.out.println(" ");
-            System.out.println("Пример команды:  java -jar TextOnPic.jar mem ./image.png 'Текст'");
+            System.out.println("Пример команды:  java -jar TextOnPic.jar mem ./image.png 'Hello world!'");
 
         }
         if (!args[0].isEmpty() && arguments[0].equals("mem")) {
